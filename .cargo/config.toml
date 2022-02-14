@@ -2,24 +2,17 @@
 # Enable global lints
 rustflags = [
   # Denies
-  "-Dunsafe_code",
-  "-Dunused_imports",
   "-Drustdoc::broken_intra_doc_links",
-  "-Dclippy::cloned_instead_of_copied",
-  "-Dclippy::filter_map_next",
-  "-Dclippy::fn_params_excessive_bools",
-  "-Dclippy::manual_filter_map",
-  "-Dclippy::map_flatten",
-  "-Dclippy::map_unwrap_or",
-  "-Dclippy::mut_mut",
-  "-Dclippy::needless_pass_by_value",
 
   # Warns
   "-Wmissing_docs",
   "-Wrust_2018_idioms",
+  "-Wunsafe_code",
+  "-Wunused_imports",
   "-Wvariant_size_differences",
   "-Wclippy::checked_conversions",
-  #"-Wclippy::cognitive_complexity",  # <- Too much shit to fix, enable by service first
+  "-Wclippy::cloned_instead_of_copied",
+  # "-Wclippy::cognitive_complexity",  # <- Too much shit to fix, enable by service first
   "-Wclippy::dbg_macro",
   "-Wclippy::decimal_literal_representation",
   "-Wclippy::empty_enum",
@@ -29,6 +22,8 @@ rustflags = [
   "-Wclippy::explicit_into_iter_loop",
   "-Wclippy::explicit_iter_loop",
   "-Wclippy::filter_map_next",
+  "-Wclippy::filter_map_next",
+  "-Wclippy::fn_params_excessive_bools",
   "-Wclippy::if_not_else",
   "-Wclippy::implicit_clone",
   "-Wclippy::implicit_saturating_sub",
@@ -38,19 +33,24 @@ rustflags = [
   "-Wclippy::large_types_passed_by_value",
   "-Wclippy::let_underscore_drop",
   "-Wclippy::let_unit_value",
+  "-Wclippy::manual_filter_map",
   "-Wclippy::manual_find_map",
   "-Wclippy::manual_ok_or",
   "-Wclippy::manual_unwrap_or",
+  "-Wclippy::map_flatten",
+  "-Wclippy::map_unwrap_or",
   "-Wclippy::match_same_arms",
   "-Wclippy::missing_const_for_fn",
   "-Wclippy::missing_errors_doc",
+  "-Wclippy::mut_mut",
   "-Wclippy::needless_continue",
+  "-Wclippy::needless_pass_by_value",
   "-Wclippy::ref_option_ref",
   "-Wclippy::single_match_else",
   "-Wclippy::suspicious_operation_groupings",
   "-Wclippy::type_repetition_in_bounds",
   "-Wclippy::unnecessary_sort_by",
   "-Wclippy::unnecessary_wraps",
-  #"-Wclippy::use_self", # <- Issues with factori
+  # "-Wclippy::use_self", # <- Issues with factori
   "-Wclippy::useless_format",
 ]
