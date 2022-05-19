@@ -1,6 +1,10 @@
 [target.'cfg(all())']
 # Enable global lints
 rustflags = [
+  # Allows
+  "-Aclippy::extra_unused_lifetimes", # <- Problems with diesel::Insertable macro expansion.
+  "-Aclippy::use_self",               # <- Problems with macro expansions.
+
   # Denies
   "-Drustdoc::broken_intra_doc_links",
 
@@ -40,7 +44,7 @@ rustflags = [
   "-Wclippy::map_flatten",
   "-Wclippy::map_unwrap_or",
   "-Wclippy::match_same_arms",
-  "-Wclippy::missing_const_for_fn",
+  #"-Wclippy::missing_const_for_fn", <- too many false positives.
   "-Wclippy::missing_errors_doc",
   "-Wclippy::mut_mut",
   "-Wclippy::needless_continue",
@@ -51,6 +55,5 @@ rustflags = [
   "-Wclippy::type_repetition_in_bounds",
   "-Wclippy::unnecessary_sort_by",
   "-Wclippy::unnecessary_wraps",
-  # "-Wclippy::use_self", # <- Issues with factori
   "-Wclippy::useless_format",
 ]
