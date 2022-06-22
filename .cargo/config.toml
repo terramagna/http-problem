@@ -2,6 +2,7 @@
 # Enable global lints
 rustflags = [
   # Allows
+  "-Aclippy::let_unit_value",
   "-Aclippy::extra_unused_lifetimes", # <- Problems with diesel::Insertable macro expansion.
   "-Aclippy::use_self",               # <- Problems with macro expansions.
 
@@ -36,7 +37,6 @@ rustflags = [
   "-Wclippy::items_after_statements",
   "-Wclippy::large_types_passed_by_value",
   "-Wclippy::let_underscore_drop",
-  "-Wclippy::let_unit_value",
   "-Wclippy::manual_filter_map",
   "-Wclippy::manual_find_map",
   "-Wclippy::manual_ok_or",
