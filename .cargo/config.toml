@@ -8,6 +8,7 @@ rustflags = [
 
   # Denies
   "-Drustdoc::broken_intra_doc_links",
+  "-Dclippy::mod_module_files",
 
   # Warns
   "-Wmissing_docs",
