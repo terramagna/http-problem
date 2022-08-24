@@ -1,0 +1,50 @@
+[package]
+name = "http-problem"
+version = "0.1.0"
+authors = ["Luis Holanda <luiscmholanda@gmail.com>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "A HTTP APIs focused error handling library"
+homepage = "https://github.com/terramagna/rust-http-problem"
+repository = "https://github.com/terramagna/rust-http-problem"
+keywords = ["http", "api", "error", "7807"]
+categories = ["web-programming"]
+include = ["src/**/*.rs"]
+
+
+[dependencies]
+backtrace = "0.3.65"
+chrono = "0.4.19"
+eyre = "0.6.8"
+http = "0.2.8"
+once_cell = "1.10.0"
+parking_lot = "0.12.1"
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = "1.0.81"
+
+[dependencies.actix-web]
+default-features = false
+optional = true
+version = "4.0.1"
+
+[dependencies.axum]
+optional = true
+version = "0.5.10"
+
+[dependencies.diesel]
+default-features = false
+features = ["r2d2"]
+optional = true
+version = "1.4.8"
+
+[dependencies.tokio-postgres]
+default-features = false
+optional = true
+version = "0.7.6"
+
+[features]
+diesel = ["dep:diesel", "sql"]
+actix = ["dep:actix-web"]
+axum = ["dep:axum"]
+sql = []
+tokio-postgres = ["dep:tokio-postgres", "sql"]
