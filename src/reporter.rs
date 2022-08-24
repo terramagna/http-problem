@@ -7,6 +7,7 @@ use std::{
 
 use backtrace::Backtrace;
 use chrono::{DateTime, Local};
+use http::Extensions;
 use once_cell::sync::OnceCell;
 use parking_lot::RwLock;
 
@@ -16,13 +17,13 @@ static REPORTER: OnceCell<Box<dyn ProblemReporter + Send + Sync>> = OnceCell::ne
 
 #[track_caller]
 pub(crate) fn capture_handler(error: &(dyn Error + 'static)) -> Box<dyn eyre::EyreHandler> {
-    let mut report = Report::default();
+    let mut report = Box::default();
 
     if let Some(reporter) = global_reporter() {
         reporter.capture_error_context(&mut report, error);
     }
 
-    Box::new(report)
+    report
 }
 
 pub(crate) fn global_reporter() -> Option<&'static dyn ProblemReporter> {
@@ -78,10 +79,10 @@ pub trait ProblemReporter {
 /// Note that the [`Backtrace`] is NOT resolved during creation, to prevent
 /// wasting time on the creation of non-reported errors.
 pub struct Report {
-    // TODO: Add a way of reporters add arbitrary information in the report.
     backtrace: RwLock<Backtrace>,
     location: &'static Location<'static>,
     timestamp: DateTime<Local>,
+    extensions: Extensions,
 }
 
 impl Default for Report {
@@ -91,6 +92,7 @@ impl Default for Report {
             backtrace: RwLock::new(Backtrace::new_unresolved()),
             location: Location::caller(),
             timestamp: Local::now(),
+            extensions: Extensions::new(),
         }
     }
 }
@@ -121,6 +123,20 @@ impl Report {
     #[inline(always)]
     pub fn timestamp(&self) -> DateTime<Local> {
         self.timestamp
+    }
+
+    /// Inserts an arbitrary data into the report.
+    #[inline(always)]
+    pub fn insert<T: Send + Sync + 'static>(&mut self, val: T) {
+        self.extensions.insert(val);
+    }
+
+    /// Get data inserted in the report via [`Self::insert`].
+    ///
+    /// Returns `None` if no data with the given type is found.
+    #[inline(always)]
+    pub fn get<T: Send + Sync + 'static>(&self) -> Option<&T> {
+        self.extensions.get()
     }
 }
 
@@ -190,5 +206,16 @@ mod tests {
             .count();
 
         assert!(symbols_count > 0);
+    }
+
+    #[test]
+    fn test_report_extensions() {
+        let mut rep = Report::default();
+
+        rep.insert(2usize);
+
+        assert_eq!(rep.get(), Some(&2usize));
+
+        assert!(rep.get::<String>().is_none());
     }
 }
