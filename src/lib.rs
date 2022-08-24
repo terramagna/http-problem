@@ -72,16 +72,7 @@ pub type CowStr = Cow<'static, str>;
 /// Convenience alias for functions that can error ouy with [`Problem`].
 pub type Result<T, E = Problem> = std::result::Result<T, E>;
 
-/// Install the necessary machinery to make [`Problem`] based
-/// error handling work.
-///
-/// Ideally, this should should be called first in the main of the binary.
-///
-/// # Panics
-///
-/// This function panics if fails to set the necessary machinery,
-/// which happens if the function was already called before.
-pub fn install() {
+fn install() {
     static HOOK_INSTALLED: Once = Once::new();
 
     HOOK_INSTALLED.call_once(|| {
