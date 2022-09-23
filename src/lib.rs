@@ -24,7 +24,6 @@
 //! [`ProblemResultExt`]: crate::ext::ProblemResultExt
 //! [`OptionExt`]: crate::ext::OptionExt
 //! [`ProblemResultExt::catch_err`]: crate::ext::ProblemResultExt::catch_err
-#![feature(iter_intersperse)]
 use std::{borrow::Cow, collections::HashMap, panic::Location};
 
 use backtrace::Backtrace;
