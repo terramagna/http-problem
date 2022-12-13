@@ -102,6 +102,7 @@ impl<T> ProblemResultExt for Result<T> {
         match self {
             Ok(ok) => Ok(Some(ok)),
             Err(err) => {
+                #[allow(clippy::question_mark)]
                 if let Err(err) = err.downcast::<NotFound>() {
                     #[cfg(feature = "diesel")]
                     err.downcast::<NoRowsFound>()?;
