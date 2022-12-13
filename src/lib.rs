@@ -309,7 +309,7 @@ impl Problem {
         let extension = extension.into();
         match extension.as_ref() {
             "type" | "status" | "details" | "cause" | "" => {
-                panic!("Invalid extension received: {}", extension)
+                panic!("Invalid extension received: {extension}")
             }
             _ => self.inner.extensions.insert(extension, value),
         }

@@ -150,7 +150,7 @@ impl eyre::EyreHandler for Report {
             self.location.column()
         )?;
 
-        write!(f, "{}", error)?;
+        write!(f, "{error}")?;
 
         // Causes.
         if error.source().is_some() {

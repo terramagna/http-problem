@@ -5,6 +5,7 @@ rustflags = [
   "-Aclippy::let_unit_value",
   "-Aclippy::extra_unused_lifetimes", # <- Problems with diesel::Insertable macro expansion.
   "-Aclippy::use_self",               # <- Problems with macro expansions.
+  "-Aclippy::result_large_err",
 
   # Denies
   "-Drustdoc::broken_intra_doc_links",
@@ -16,6 +17,7 @@ rustflags = [
   "-Wunsafe_code",
   "-Wunused_imports",
   "-Wvariant_size_differences",
+  "-Wlet_underscore_drop",
   "-Wclippy::checked_conversions",
   "-Wclippy::cloned_instead_of_copied",
   # "-Wclippy::cognitive_complexity",  # <- Too much shit to fix, enable by service first
@@ -37,7 +39,6 @@ rustflags = [
   "-Wclippy::index_refutable_slice",
   "-Wclippy::items_after_statements",
   "-Wclippy::large_types_passed_by_value",
-  "-Wclippy::let_underscore_drop",
   "-Wclippy::manual_filter_map",
   "-Wclippy::manual_find_map",
   "-Wclippy::manual_ok_or",
@@ -52,6 +53,7 @@ rustflags = [
   "-Wclippy::needless_pass_by_value",
   "-Wclippy::ref_option_ref",
   "-Wclippy::single_match_else",
+  "-Wclippy::manual_let_else",
   "-Wclippy::suspicious_operation_groupings",
   "-Wclippy::type_repetition_in_bounds",
   "-Wclippy::unnecessary_sort_by",
