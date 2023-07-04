@@ -226,6 +226,7 @@ impl std::error::Error for Problem {
 }
 
 impl Problem {
+    #[cfg(any(feature = "actix", feature = "axum"))]
     pub(crate) fn report_as_error(&self) {
         if let Some(reporter) = self::reporter::global_reporter() {
             if reporter.should_report_error(self) {

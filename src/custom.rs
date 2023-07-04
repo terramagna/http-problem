@@ -12,7 +12,7 @@ use super::{CowStr, Extensions, Problem};
 ///
 /// ```
 /// use http_problem::prelude::{StatusCode, Uri};
-/// problem::define_custom_type! {
+/// http_problem::define_custom_type! {
 ///     /// An error that occurs when a transaction cannot be done
 ///     /// because one of the accounts doesn't have enough credit.
 ///     type OutOfCredit {
@@ -28,7 +28,7 @@ use super::{CowStr, Extensions, Problem};
 ///     }
 /// }
 ///
-/// fn do_transaction() -> problem::Result<()> {
+/// fn do_transaction() -> http_problem::Result<()> {
 ///     Err(OutOfCredit {
 ///         balance: 50,
 ///         cost: 30,
