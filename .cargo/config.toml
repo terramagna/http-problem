@@ -60,3 +60,9 @@ rustflags = [
   "-Wclippy::unnecessary_wraps",
   "-Wclippy::useless_format",
 ]
+
+[registries.crates-io]
+protocol = "sparse"
+
+[unstable]
+sparse-registry = true
