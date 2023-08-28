@@ -8,8 +8,8 @@
 //! The workflow for error handling with this library is as follow:
 //!
 //! 1. Use the predefined errors/functions or define a new one with the
-//!    [`define_custom_type!`] macro to returns errors in functions that
-//!    return [`Result<T, Problem>`] (an alias is provided in the library).
+//!    [`define_custom_type!`] macro to returns errors in functions that return
+//!    [`Result<T, Problem>`] (an alias is provided in the library).
 //!     * You can also use the extensions traits [`ResultExt`],
 //!       [`ProblemResultExt`], [`OptionExt`] to handle common cases.
 //! 2. Catch any desired error with [`ProblemResultExt::catch_err`].

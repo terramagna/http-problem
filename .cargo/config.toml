@@ -3,9 +3,10 @@
 rustflags = [
   # Allows
   "-Aclippy::let_unit_value",
-  "-Aclippy::extra_unused_lifetimes", # <- Problems with diesel::Insertable macro expansion.
-  "-Aclippy::use_self",               # <- Problems with macro expansions.
+  "-Aclippy::extra_unused_lifetimes",   # <- Problems with diesel::Insertable macro expansion.
+  "-Aclippy::use_self",                 # <- Problems with macro expansions.
   "-Aclippy::result_large_err",
+  "-Aclippy::diverging_sub_expression", # <- Problems with async traits
 
   # Denies
   "-Drustdoc::broken_intra_doc_links",
@@ -63,6 +64,3 @@ rustflags = [
 
 [registries.crates-io]
 protocol = "sparse"
-
-[unstable]
-sparse-registry = true
