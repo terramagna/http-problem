@@ -70,6 +70,29 @@ impl From<PgError> for Problem {
     }
 }
 
+#[cfg(feature = "sqlx")]
+impl From<sqlx_core::Error> for Problem {
+    #[track_caller]
+    fn from(err: sqlx_core::Error) -> Self {
+        if let Some(db_err) = err.as_database_error() {
+            match db_err.kind() {
+                sqlx_core::error::ErrorKind::UniqueViolation => {
+                    sql_error(UniqueViolation(db_err.into()))
+                }
+                sqlx_core::error::ErrorKind::ForeignKeyViolation => {
+                    sql_error(ForeignKeyViolation(db_err.into()))
+                }
+                sqlx_core::error::ErrorKind::CheckViolation => {
+                    sql_error(CheckViolation(db_err.into()))
+                }
+                _ => sql_error(err),
+            }
+        } else {
+            sql_error(err)
+        }
+    }
+}
+
 /// A query returned no rows where it should be.
 ///
 /// This error only happens when a query expect only one row, otherwise, no rows
@@ -245,6 +268,17 @@ impl From<Box<dyn DatabaseErrorInformation + Send + Sync>> for DbErrorInfo {
 #[cfg(feature = "tokio-postgres")]
 impl From<&'_ tokio_postgres::error::DbError> for DbErrorInfo {
     fn from(err: &'_ tokio_postgres::error::DbError) -> Self {
+        Self {
+            constraint_name: err.constraint().map(String::from),
+            message: err.message().to_string(),
+            table_name: err.table().map(String::from),
+        }
+    }
+}
+
+#[cfg(feature = "sqlx")]
+impl From<&'_ dyn sqlx_core::error::DatabaseError> for DbErrorInfo {
+    fn from(err: &'_ dyn sqlx_core::error::DatabaseError) -> Self {
         Self {
             constraint_name: err.constraint().map(String::from),
             message: err.message().to_string(),
