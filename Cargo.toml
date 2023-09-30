@@ -39,6 +39,6 @@ features = ["r2d2"]
 optional = true
 
 [dependencies.tokio-postgres]
-version = "0.7.6"
+version = "0.7.10"
 default-features = false
 optional = true
