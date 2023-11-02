@@ -50,7 +50,11 @@ where
 {
     #[track_caller]
     fn internal(self) -> Result<Self::Value> {
-        self.map_err(http::internal_error)
+        // NOTE: Can't use map_err as it doesn't has track_caller.
+        match self {
+            Ok(t) => Ok(t),
+            Err(err) => Err(http::internal_error(err)),
+        }
     }
 }
 
