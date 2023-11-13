@@ -64,3 +64,6 @@ rustflags = [
 
 [registries.crates-io]
 protocol = "sparse"
+
+[build]
+rustflags = ["-Z", "threads=8"]
