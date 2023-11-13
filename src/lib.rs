@@ -54,8 +54,6 @@ pub mod sql;
 pub mod prelude {
     #[cfg(feature = "actix")]
     pub use super::actix::*;
-    #[cfg(feature = "axum")]
-    pub use super::axum::*;
     #[cfg(feature = "sql")]
     pub use super::sql::*;
     pub use super::{commons::*, custom::*, ext::*, http, Problem, Result};
