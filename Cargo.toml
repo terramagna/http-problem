@@ -20,7 +20,7 @@ sqlx = ["dep:sqlx-core", "sql"]
 tokio-postgres = ["dep:tokio-postgres", "sql"]
 
 [dependencies]
-actix-web = { version = "4.0.1", default-features = false, optional = true }
+actix-web = { version = "4.4.0", default-features = false, optional = true }
 axum = { version = "0.6", optional = true }
 backtrace = "0.3.69"
 chrono = "0.4.19"
