@@ -127,7 +127,7 @@ impl Report {
 
     /// Inserts an arbitrary data into the report.
     #[inline(always)]
-    pub fn insert<T: Send + Sync + 'static>(&mut self, val: T) {
+    pub fn insert<T: Clone + Send + Sync + 'static>(&mut self, val: T) {
         self.extensions.insert(val);
     }
 

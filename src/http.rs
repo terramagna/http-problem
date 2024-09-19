@@ -1,9 +1,7 @@
 use std::{error::Error, fmt};
 
-use crate::{
-    custom::{CustomProblem, StatusCode, Uri},
-    CowStr, Extensions, Problem,
-};
+pub use crate::custom::{StatusCode, Uri};
+use crate::{custom::CustomProblem, CowStr, Extensions, Problem};
 
 /// Create a [`Problem`] instance with a [`BadRequest`] cause.
 #[track_caller]

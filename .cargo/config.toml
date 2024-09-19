@@ -1,5 +1,4 @@
 [target.'cfg(all())']
-# Enable global lints
 rustflags = [
   # Allows
   "-Aclippy::let_unit_value",
@@ -7,6 +6,9 @@ rustflags = [
   "-Aclippy::use_self",                 # <- Problems with macro expansions.
   "-Aclippy::result_large_err",
   "-Aclippy::diverging_sub_expression", # <- Problems with async traits
+
+  "-Aclippy::doc_lazy_continuation",
+  "-Aclippy::too_long_first_doc_paragraph",
 
   # Denies
   "-Drustdoc::broken_intra_doc_links",
@@ -60,7 +62,7 @@ rustflags = [
   "-Wclippy::unnecessary_sort_by",
   "-Wclippy::unnecessary_wraps",
   "-Wclippy::useless_format",
-]
+] # Enable global lints
 
 [registries.crates-io]
 protocol = "sparse"

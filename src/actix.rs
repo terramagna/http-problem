@@ -7,13 +7,13 @@ use crate::{http, CowStr, Problem, Result};
 
 impl ResponseError for Problem {
     fn status_code(&self) -> StatusCode {
-        self.status()
+        StatusCode::from_u16(self.status().as_u16()).expect("status is valid")
     }
 
     fn error_response(&self) -> HttpResponse {
         self.report_as_error();
 
-        HttpResponse::build(self.status())
+        HttpResponse::build(self.status_code())
             .insert_header((header::CONTENT_TYPE, "application/problem+json"))
             .json(self)
     }
@@ -66,11 +66,12 @@ mod tests {
     fn test_response_error() {
         let err = crate::http::failed_precondition();
 
-        assert_eq!(err.status_code(), err.status());
+        let actix_status = ::http::StatusCode::from_u16(err.status_code().as_u16()).unwrap();
+        assert_eq!(actix_status, err.status());
 
         let resp = err.error_response();
-
-        assert_eq!(resp.status(), err.status());
+        let actix_status = ::http::StatusCode::from_u16(resp.status().as_u16()).unwrap();
+        assert_eq!(actix_status, err.status());
         assert_eq!(
             resp.headers().get(header::CONTENT_TYPE).unwrap().as_bytes(),
             b"application/problem+json"
