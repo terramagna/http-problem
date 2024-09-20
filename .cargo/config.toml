@@ -13,6 +13,7 @@ rustflags = [
   # Denies
   "-Drustdoc::broken_intra_doc_links",
   "-Dclippy::mod_module_files",
+  "-Dclippy::disallowed_methods",
 
   # Warns
   "-Wmissing_docs",
