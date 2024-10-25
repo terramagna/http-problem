@@ -3,17 +3,17 @@ use std::{
     fmt::{self, Debug},
     ops::Deref,
     panic::Location,
+    sync::OnceLock,
 };
 
 use backtrace::Backtrace;
 use chrono::{DateTime, Local};
 use http::Extensions;
-use once_cell::sync::OnceCell;
 use parking_lot::RwLock;
 
 use crate::Problem;
 
-static REPORTER: OnceCell<Box<dyn ProblemReporter + Send + Sync>> = OnceCell::new();
+static REPORTER: OnceLock<Box<dyn ProblemReporter + Send + Sync>> = OnceLock::new();
 
 #[track_caller]
 pub(crate) fn capture_handler(error: &(dyn Error + 'static)) -> Box<dyn eyre::EyreHandler> {
