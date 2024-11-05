@@ -262,7 +262,7 @@ impl Problem {
         }
     }
 
-    /// Sets the title for this problem.
+    /// Sets the title for this problem. The title is visible to the user.
     ///
     /// **OBS**: HTTP Status only problems MUST NOT have their title changed.
     ///
@@ -273,14 +273,15 @@ impl Problem {
         self
     }
 
-    /// Sets the detail for this problem.
+    /// Sets the detail for this problem. The title is visible to the user.
     #[must_use]
     pub fn with_detail(mut self, detail: impl Into<CowStr>) -> Self {
         self.inner.details = detail.into();
         self
     }
 
-    /// Sets the error cause for this problem.
+    /// Sets the error cause for this problem. The cause is not visible to the
+    /// user.
     #[must_use]
     #[track_caller]
     pub fn with_cause<E>(mut self, cause: E) -> Self
