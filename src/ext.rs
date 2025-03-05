@@ -3,7 +3,7 @@
 //! This module provides traits that extends the common error
 //! handling types `Result` and `Option` with methods that
 //! integrate them with the types defined in this crate.
-use std::error::Error;
+use std::{borrow::Cow, error::Error};
 
 #[cfg(feature = "diesel")]
 use crate::sql::NoRowsFound;
@@ -132,6 +132,18 @@ pub trait OptionExt: sealed::Sealed + Sized {
     where
         I: std::fmt::Display;
 
+    /// Returns `Ok(_)` if the source is `Some(_)`, otherwise, returns a
+    /// `Problem` that can downcast to `Unprocessable`. This method is
+    /// useful when failing to find the entity prevents the request from being
+    /// processed.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` when `self` is `None`.
+    fn or_unprocessable<M>(self, message: M) -> Result<Self::Value>
+    where
+        M: Into<Cow<'static, str>>;
+
     /// It's a wrapper to `or_not_found` to be used when
     /// there is no a specific identifier to entity message.
     ///
@@ -155,6 +167,19 @@ impl<T> OptionExt for Option<T> {
             Ok(value)
         } else {
             Err(http::not_found(entity, identifier))
+        }
+    }
+
+    #[track_caller]
+    fn or_unprocessable<M>(self, message: M) -> Result<Self::Value>
+    where
+        M: Into<Cow<'static, str>>,
+    {
+        // Cannot use Option::ok_or_else as it isn't annotated with track_caller.
+        if let Some(value) = self {
+            Ok(value)
+        } else {
+            Err(http::unprocessable(message))
         }
     }
 
