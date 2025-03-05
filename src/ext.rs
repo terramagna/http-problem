@@ -140,9 +140,7 @@ pub trait OptionExt: sealed::Sealed + Sized {
     /// # Errors
     ///
     /// Returns `Err` when `self` is `None`.
-    fn or_unprocessable<M>(self, message: M) -> Result<Self::Value>
-    where
-        M: Into<Cow<'static, str>>;
+    fn or_unprocessable(self, message: &'static str) -> Result<Self::Value>;
 
     /// It's a wrapper to `or_not_found` to be used when
     /// there is no a specific identifier to entity message.
@@ -154,6 +152,20 @@ pub trait OptionExt: sealed::Sealed + Sized {
     ///
     /// Returns `Err` when `self` is `None`.
     fn or_not_found_unknown(self, entity: &'static str) -> Result<Self::Value>;
+
+    /// Returns `Ok(_)` if the source is `Some(_)`, otherwise, returns a
+    /// `Problem` that can downcast to `Unprocessable`. This method is
+    /// useful when failing to find the entity prevents the request from being
+    /// processed. Differently from `or_unprocessable`, this method receives a
+    /// closure to avoid unnecessary allocations.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` when `self` is `None`
+    fn or_unprocessable_with<F, M>(self, message_fn: F) -> Result<Self::Value>
+    where
+        F: FnOnce() -> M,
+        M: Into<Cow<'static, str>>;
 }
 
 impl<T> OptionExt for Option<T> {
@@ -171,15 +183,26 @@ impl<T> OptionExt for Option<T> {
     }
 
     #[track_caller]
-    fn or_unprocessable<M>(self, message: M) -> Result<Self::Value>
+    fn or_unprocessable(self, message: &'static str) -> Result<Self::Value> {
+        // Cannot use Option::ok_or_else as it isn't annotated with track_caller.
+        if let Some(value) = self {
+            Ok(value)
+        } else {
+            Err(http::unprocessable(message))
+        }
+    }
+
+    #[track_caller]
+    fn or_unprocessable_with<F, M>(self, message_fn: F) -> Result<Self::Value>
     where
+        F: FnOnce() -> M,
         M: Into<Cow<'static, str>>,
     {
         // Cannot use Option::ok_or_else as it isn't annotated with track_caller.
         if let Some(value) = self {
             Ok(value)
         } else {
-            Err(http::unprocessable(message))
+            Err(http::unprocessable(message_fn()))
         }
     }
 
