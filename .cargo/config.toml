@@ -6,6 +6,7 @@ rustflags = [
   "-Aclippy::use_self",                 # <- Problems with macro expansions.
   "-Aclippy::result_large_err",
   "-Aclippy::diverging_sub_expression", # <- Problems with async traits
+  "-Aclippy::map_unwrap_or",            # <- Separate unwrap_or sometimes is more clear
 
   "-Aclippy::doc_lazy_continuation",
   "-Aclippy::too_long_first_doc_paragraph",
@@ -47,7 +48,6 @@ rustflags = [
   "-Wclippy::manual_ok_or",
   "-Wclippy::manual_unwrap_or",
   "-Wclippy::map_flatten",
-  "-Wclippy::map_unwrap_or",
   "-Wclippy::match_same_arms",
   #"-Wclippy::missing_const_for_fn", <- too many false positives.
   "-Wclippy::missing_errors_doc",
